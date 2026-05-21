@@ -1,0 +1,316 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Makro — Ciel's Photograph</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=Josefin+Sans:wght@300;400;600&display=swap" rel="stylesheet">
+  <style>
+    :root{--brown-deep:#2C1A0E;--brown-mid:#4A2C17;--brown-warm:#7A4A28;--brown-light:#B07D55;--forest-dark:#1A2E1A;--forest-mid:#2D4A2D;--forest-green:#3D6B3D;--forest-light:#5C8A5C;--sage:#8BAF8B;--cream:#F2E8D9;--gold:#C9A84C;--gold-light:#E8C87A;--ivory:#FAF5EC}
+    *,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
+    html{scroll-behavior:smooth}
+    body{background:var(--brown-deep);color:var(--cream);font-family:'Josefin Sans',sans-serif;min-height:100vh;overflow-x:hidden}
+    body::before{content:'';position:fixed;inset:0;background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.04'/%3E%3C/svg%3E");pointer-events:none;z-index:1000;opacity:0.4}
+ 
+    nav{position:fixed;top:0;left:0;right:0;z-index:100;display:flex;align-items:center;justify-content:space-between;padding:0 60px;height:64px;background:linear-gradient(180deg,rgba(44,26,14,0.97) 0%,rgba(44,26,14,0.8) 100%);backdrop-filter:blur(12px);border-bottom:1px solid rgba(201,168,76,0.2)}
+    .nav-logo{font-family:'Cormorant Garamond',serif;font-size:1.3rem;font-style:italic;color:var(--gold-light);letter-spacing:0.05em;text-decoration:none}
+    .nav-links{display:flex;gap:40px;list-style:none}
+    .nav-links a{font-size:0.72rem;font-weight:600;letter-spacing:0.18em;text-transform:uppercase;color:var(--cream);text-decoration:none;position:relative;padding-bottom:4px;opacity:0.75;transition:opacity 0.3s,color 0.3s}
+    .nav-links a::after{content:'';position:absolute;bottom:0;left:0;width:0;height:1px;background:var(--gold);transition:width 0.3s ease}
+    .nav-links a:hover,.nav-links a.active{opacity:1;color:var(--gold-light)}
+    .nav-links a:hover::after,.nav-links a.active::after{width:100%}
+ 
+    .page-header{padding:140px 60px 80px;position:relative;overflow:hidden;background:linear-gradient(160deg,var(--brown-deep) 0%,var(--brown-mid) 50%,var(--forest-dark) 100%)}
+    .page-header::before{content:'';position:absolute;left:-80px;top:60px;width:400px;height:400px;border-radius:50%;border:1px solid rgba(201,168,76,0.06)}
+    .page-tag{font-size:0.65rem;font-weight:600;letter-spacing:0.35em;text-transform:uppercase;color:var(--gold);display:block;margin-bottom:14px}
+    .page-title{font-family:'Cormorant Garamond',serif;font-size:clamp(3rem,7vw,6rem);font-weight:300;color:var(--ivory);line-height:0.9}
+    .page-title em{font-style:italic;color:var(--gold-light)}
+    .page-desc{font-size:0.8rem;line-height:1.8;color:var(--sage);max-width:480px;margin-top:24px;opacity:0.85}
+    .page-count{position:absolute;right:60px;bottom:80px;font-family:'Cormorant Garamond',serif;font-size:5rem;font-weight:300;color:rgba(201,168,76,0.07);line-height:1}
+ 
+    /* MASONRY-STYLE GRID */
+    .gallery{padding:60px;max-width:1400px;margin:0 auto}
+    .gallery-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:16px;grid-auto-rows:220px}
+ 
+    .photo-card{position:relative;overflow:hidden;border-radius:3px;cursor:pointer;background:var(--forest-dark)}
+    .photo-card.s2h{grid-row:span 2}
+    .photo-card.s2w{grid-column:span 2}
+    .photo-card.s22{grid-column:span 2;grid-row:span 2}
+ 
+    .photo-placeholder{position:absolute;inset:0}
+    .photo-card::after{content:'';position:absolute;inset:0;background:linear-gradient(0deg,rgba(20,8,2,0.9) 0%,rgba(20,8,2,0.1) 55%,transparent 100%);transition:opacity 0.4s}
+    .photo-card:hover::after{opacity:0.7}
+ 
+    .photo-info{position:absolute;bottom:0;left:0;right:0;padding:20px 18px 16px;z-index:2}
+    .photo-num{font-size:0.58rem;font-weight:600;letter-spacing:0.25em;color:var(--gold);display:block;margin-bottom:5px}
+    .photo-name{font-family:'Cormorant Garamond',serif;font-size:1.1rem;font-weight:400;color:var(--ivory);margin-bottom:6px;line-height:1.2}
+    .s22 .photo-name,.s2w .photo-name{font-size:1.5rem}
+    .photo-desc{font-size:0.68rem;line-height:1.6;color:rgba(242,232,217,0.7);max-height:0;overflow:hidden;transition:max-height 0.4s,opacity 0.4s;opacity:0}
+    .photo-card:hover .photo-desc{max-height:80px;opacity:1}
+ 
+    .photo-dot{position:absolute;top:14px;right:14px;z-index:3;width:8px;height:8px;border-radius:50%;background:var(--gold);opacity:0.7}
+ 
+    /* Macro color palettes */
+    .mc1{background:linear-gradient(135deg,#1a3a1a 0%,#2d5e2d 40%,#0a1a0a 100%)}
+    .mc2{background:linear-gradient(160deg,#3d1a0a 0%,#5c2a0e 50%,#2c1a0e 100%)}
+    .mc3{background:linear-gradient(200deg,#0a1a0a 0%,#1a3d1a 60%,#3d6b3d 100%)}
+    .mc4{background:radial-gradient(circle at 40% 60%,#4a2c17 0%,#1c0e05 70%)}
+    .mc5{background:linear-gradient(140deg,#1a2e1a 0%,#2d4a2d 50%,#1a1a0a 100%)}
+    .mc6{background:linear-gradient(160deg,#2c1a0e 0%,#3d2010 40%,#1a0a03 100%)}
+    .mc7{background:radial-gradient(circle at 60% 40%,#2d5e2d 0%,#0a1a0a 70%)}
+ 
+    .scene-svg{position:absolute;inset:0;width:100%;height:100%}
+ 
+    footer{background:var(--brown-deep);border-top:1px solid rgba(201,168,76,0.12);padding:40px 60px;text-align:center}
+    .footer-logo{font-family:'Cormorant Garamond',serif;font-size:1.8rem;font-style:italic;color:var(--gold-light);margin-bottom:12px;display:block}
+    .footer-copy{font-size:0.65rem;color:var(--brown-light,#b07d55);opacity:0.5}
+  </style>
+</head>
+<body>
+ 
+  <nav>
+    <a href="index.html" class="nav-logo">Ciel's Photograph</a>
+    <ul class="nav-links">
+      <li><a href="index.html">Beranda</a></li>
+      <li><a href="landscape.html">Landscape</a></li>
+      <li><a href="makro.html" class="active">Makro</a></li>
+      <li><a href="hewan.html">Hewan</a></li>
+      <li><a href="fenomena.html">Fenomena Alam</a></li>
+    </ul>
+  </nav>
+ 
+  <div class="page-header">
+    <span class="page-tag">Kategori 02</span>
+    <h1 class="page-title">Foto <em>Makro</em></h1>
+    <p class="page-desc">Dunia yang tak kasat mata — setiap permukaan menyimpan semesta tersendiri ketika lensa mendekatinya lebih jauh dari yang mata bisa.</p>
+    <span class="page-count">07</span>
+  </div>
+ 
+  <div class="gallery">
+    <div class="gallery-grid">
+ 
+      <!-- 1: 2x2 Featured -->
+      <div class="photo-card s22">
+        <div class="photo-placeholder mc1">
+          <svg class="scene-svg" viewBox="0 0 500 500" xmlns="http://www.w3.org/2000/svg">
+            <rect width="500" height="500" fill="#0a1a0a"/>
+            <!-- Big leaf macro -->
+            <ellipse cx="250" cy="250" rx="200" ry="120" fill="#1a3a1a" opacity="0.7"/>
+            <path d="M250,80 Q380,250 250,420 Q120,250 250,80Z" fill="#2d5e2d" stroke="#3d6b3d" stroke-width="0.8"/>
+            <!-- Main vein -->
+            <line x1="250" y1="95" x2="250" y2="405" stroke="#5c8a5c" stroke-width="2" opacity="0.6"/>
+            <!-- Secondary veins -->
+            <line x1="250" y1="150" x2="320" y2="175" stroke="#5c8a5c" stroke-width="1" opacity="0.4"/>
+            <line x1="250" y1="190" x2="180" y2="210" stroke="#5c8a5c" stroke-width="1" opacity="0.4"/>
+            <line x1="250" y1="240" x2="330" y2="260" stroke="#5c8a5c" stroke-width="1" opacity="0.4"/>
+            <line x1="250" y1="280" x2="170" y2="295" stroke="#5c8a5c" stroke-width="1" opacity="0.4"/>
+            <line x1="250" y1="320" x2="320" y2="340" stroke="#5c8a5c" stroke-width="1" opacity="0.3"/>
+            <!-- Dew drops -->
+            <circle cx="290" cy="170" r="9" fill="#f2e8d9" opacity="0.65"/>
+            <circle cx="225" cy="225" r="6" fill="#f2e8d9" opacity="0.55"/>
+            <circle cx="270" cy="300" r="7" fill="#f2e8d9" opacity="0.6"/>
+            <circle cx="230" cy="350" r="5" fill="#f2e8d9" opacity="0.5"/>
+            <!-- Highlight on dew -->
+            <circle cx="288" cy="168" r="3" fill="#fff" opacity="0.4"/>
+          </svg>
+        </div>
+        <div class="photo-dot"></div>
+        <div class="photo-info">
+          <span class="photo-num">MK — 001</span>
+          <h3 class="photo-name">Peta Kehidupan di Helai Daun</h3>
+          <p class="photo-desc">Jaringan urat daun yang menyerupai peta kota — setiap percabangan mengalirkan nutrisi ke sudut terkecil. Difoto dengan lensa makro 100mm, jarak fokus 3 cm.</p>
+        </div>
+      </div>
+ 
+      <!-- 2 -->
+      <div class="photo-card s2h">
+        <div class="photo-placeholder mc2">
+          <svg class="scene-svg" viewBox="0 0 250 500" xmlns="http://www.w3.org/2000/svg">
+            <rect width="250" height="500" fill="#3d1a0a"/>
+            <!-- Flower stamen close-up -->
+            <circle cx="125" cy="250" r="80" fill="#5c2a0e" opacity="0.7"/>
+            <circle cx="125" cy="250" r="50" fill="#7a3a15" opacity="0.8"/>
+            <!-- Pollen dots -->
+            <circle cx="125" cy="200" r="6" fill="#e8c87a" opacity="0.8"/>
+            <circle cx="100" cy="215" r="5" fill="#c9a84c" opacity="0.9"/>
+            <circle cx="150" cy="220" r="4" fill="#e8c87a" opacity="0.7"/>
+            <circle cx="90" cy="245" r="6" fill="#c9a84c" opacity="0.85"/>
+            <circle cx="160" cy="250" r="5" fill="#e8c87a" opacity="0.8"/>
+            <circle cx="105" cy="275" r="4" fill="#c9a84c" opacity="0.75"/>
+            <circle cx="145" cy="280" r="6" fill="#e8c87a" opacity="0.8"/>
+            <circle cx="125" cy="295" r="5" fill="#c9a84c" opacity="0.85"/>
+            <!-- Petals suggestion -->
+            <path d="M125,170 Q145,200 125,200 Q105,200 125,170Z" fill="#c9a84c" opacity="0.3"/>
+            <path d="M170,200 Q185,230 165,235 Q145,235 170,200Z" fill="#c9a84c" opacity="0.3"/>
+          </svg>
+        </div>
+        <div class="photo-dot"></div>
+        <div class="photo-info">
+          <span class="photo-num">MK — 002</span>
+          <h3 class="photo-name">Serbuk Sari Bunga Liar</h3>
+          <p class="photo-desc">Butiran serbuk sari emas berkilap — masing-masing berdiameter sepersepuluh milimeter, siap menghidupi ekosistem.</p>
+        </div>
+      </div>
+ 
+      <!-- 3 -->
+      <div class="photo-card">
+        <div class="photo-placeholder mc3">
+          <svg class="scene-svg" viewBox="0 0 250 220" xmlns="http://www.w3.org/2000/svg">
+            <rect width="250" height="220" fill="#0a1a0a"/>
+            <!-- Eye of insect -->
+            <circle cx="125" cy="110" r="85" fill="#1a3a1a" opacity="0.7"/>
+            <!-- Compound eye hexagons -->
+            <circle cx="125" cy="110" r="70" fill="#0f2a0f" stroke="#3d6b3d" stroke-width="0.5"/>
+            <!-- Hex pattern -->
+            <g opacity="0.4" stroke="#5c8a5c" stroke-width="0.4" fill="none">
+              <circle cx="125" cy="90" r="10"/>
+              <circle cx="108" cy="100" r="10"/>
+              <circle cx="142" cy="100" r="10"/>
+              <circle cx="108" cy="120" r="10"/>
+              <circle cx="142" cy="120" r="10"/>
+              <circle cx="125" cy="130" r="10"/>
+              <circle cx="125" cy="70" r="10"/>
+              <circle cx="90" cy="90" r="10"/>
+              <circle cx="160" cy="90" r="10"/>
+              <circle cx="90" cy="130" r="10"/>
+              <circle cx="160" cy="130" r="10"/>
+              <circle cx="125" cy="150" r="10"/>
+            </g>
+            <!-- Pupil highlight -->
+            <circle cx="130" cy="105" r="12" fill="#fff" opacity="0.07"/>
+            <circle cx="132" cy="103" r="5" fill="#fff" opacity="0.15"/>
+          </svg>
+        </div>
+        <div class="photo-dot"></div>
+        <div class="photo-info">
+          <span class="photo-num">MK — 003</span>
+          <h3 class="photo-name">Mata Majemuk Capung</h3>
+          <p class="photo-desc">Ribuan lensa heksagonal yang memberi capung penglihatan hampir 360 derajat.</p>
+        </div>
+      </div>
+ 
+      <!-- 4 -->
+      <div class="photo-card">
+        <div class="photo-placeholder mc4">
+          <svg class="scene-svg" viewBox="0 0 250 220" xmlns="http://www.w3.org/2000/svg">
+            <rect width="250" height="220" fill="#1c0e05"/>
+            <!-- Bark texture macro -->
+            <rect width="250" height="220" fill="#3d2010" opacity="0.6"/>
+            <!-- Bark lines -->
+            <path d="M0,40 Q60,30 120,50 Q180,70 250,45" stroke="#1c0e05" stroke-width="3" fill="none" opacity="0.8"/>
+            <path d="M0,70 Q80,55 140,75 Q200,95 250,70" stroke="#1c0e05" stroke-width="2" fill="none" opacity="0.7"/>
+            <path d="M0,100 Q50,85 110,105 Q170,125 250,100" stroke="#1c0e05" stroke-width="2.5" fill="none" opacity="0.8"/>
+            <path d="M0,130 Q70,115 130,135 Q190,155 250,130" stroke="#1c0e05" stroke-width="2" fill="none" opacity="0.7"/>
+            <path d="M0,160 Q90,145 150,165 Q210,185 250,160" stroke="#1c0e05" stroke-width="3" fill="none" opacity="0.8"/>
+            <path d="M0,190 Q60,175 120,195 Q180,215 250,190" stroke="#1c0e05" stroke-width="1.5" fill="none" opacity="0.6"/>
+            <!-- Moss patch -->
+            <ellipse cx="180" cy="120" rx="35" ry="20" fill="#2d4a2d" opacity="0.5"/>
+            <ellipse cx="185" cy="117" rx="25" ry="14" fill="#3d6b3d" opacity="0.4"/>
+          </svg>
+        </div>
+        <div class="photo-dot"></div>
+        <div class="photo-info">
+          <span class="photo-num">MK — 004</span>
+          <h3 class="photo-name">Retakan Kulit Pohon Tua</h3>
+          <p class="photo-desc">Permukaan kasar pohon berusia ratusan tahun, dengan lumut yang perlahan mengisi celah-celah waktu.</p>
+        </div>
+      </div>
+ 
+      <!-- 5 -->
+      <div class="photo-card s2w">
+        <div class="photo-placeholder mc5">
+          <svg class="scene-svg" viewBox="0 0 500 220" xmlns="http://www.w3.org/2000/svg">
+            <rect width="500" height="220" fill="#1a2e1a"/>
+            <!-- Spider web detail -->
+            <line x1="250" y1="10" x2="250" y2="210" stroke="#f2e8d9" stroke-width="0.5" opacity="0.2"/>
+            <line x1="50" y1="30" x2="450" y2="190" stroke="#f2e8d9" stroke-width="0.5" opacity="0.2"/>
+            <line x1="450" y1="30" x2="50" y2="190" stroke="#f2e8d9" stroke-width="0.5" opacity="0.2"/>
+            <line x1="10" y1="110" x2="490" y2="110" stroke="#f2e8d9" stroke-width="0.5" opacity="0.2"/>
+            <!-- Concentric web rings -->
+            <circle cx="250" cy="110" r="30" fill="none" stroke="#f2e8d9" stroke-width="0.5" opacity="0.3"/>
+            <circle cx="250" cy="110" r="60" fill="none" stroke="#f2e8d9" stroke-width="0.5" opacity="0.25"/>
+            <circle cx="250" cy="110" r="90" fill="none" stroke="#f2e8d9" stroke-width="0.5" opacity="0.2"/>
+            <!-- Water drops on web -->
+            <circle cx="250" cy="80" r="4" fill="#f2e8d9" opacity="0.6"/>
+            <circle cx="220" cy="90" r="3" fill="#f2e8d9" opacity="0.5"/>
+            <circle cx="280" cy="95" r="3.5" fill="#f2e8d9" opacity="0.55"/>
+            <circle cx="200" cy="110" r="4" fill="#f2e8d9" opacity="0.6"/>
+            <circle cx="310" cy="115" r="3" fill="#f2e8d9" opacity="0.5"/>
+            <circle cx="250" cy="140" r="4" fill="#f2e8d9" opacity="0.6"/>
+            <!-- Spider -->
+            <ellipse cx="250" cy="110" rx="8" ry="6" fill="#0a0f0a"/>
+            <ellipse cx="250" cy="105" rx="5" ry="4" fill="#1a1a0a"/>
+          </svg>
+        </div>
+        <div class="photo-dot"></div>
+        <div class="photo-info">
+          <span class="photo-num">MK — 005</span>
+          <h3 class="photo-name">Mahkota Embun di Jaring Sutra</h3>
+          <p class="photo-desc">Setiap manik embun pada jaring laba-laba adalah cermin sempurna yang memantulkan dunia terbalik dalam bola kristal berdiameter 4mm.</p>
+        </div>
+      </div>
+ 
+      <!-- 6 -->
+      <div class="photo-card">
+        <div class="photo-placeholder mc6">
+          <svg class="scene-svg" viewBox="0 0 250 220" xmlns="http://www.w3.org/2000/svg">
+            <rect width="250" height="220" fill="#2c1a0e"/>
+            <!-- Beetle shell macro -->
+            <ellipse cx="125" cy="110" rx="70" ry="85" fill="#1c0e05"/>
+            <ellipse cx="125" cy="110" rx="60" ry="75" fill="#3d2010"/>
+            <!-- Iridescent shine lines -->
+            <path d="M90,60 Q125,50 160,60" stroke="#c9a84c" stroke-width="1" fill="none" opacity="0.4"/>
+            <path d="M82,80 Q125,68 168,80" stroke="#e8c87a" stroke-width="0.8" fill="none" opacity="0.35"/>
+            <path d="M80,100 Q125,88 170,100" stroke="#c9a84c" stroke-width="1" fill="none" opacity="0.4"/>
+            <path d="M82,120 Q125,108 168,120" stroke="#8baf8b" stroke-width="0.8" fill="none" opacity="0.3"/>
+            <path d="M85,140 Q125,128 165,140" stroke="#c9a84c" stroke-width="0.8" fill="none" opacity="0.35"/>
+            <!-- Center line -->
+            <line x1="125" y1="35" x2="125" y2="185" stroke="#1c0e05" stroke-width="1.5" opacity="0.6"/>
+          </svg>
+        </div>
+        <div class="photo-dot"></div>
+        <div class="photo-info">
+          <span class="photo-num">MK — 006</span>
+          <h3 class="photo-name">Cangkang Kumbang Zamrud</h3>
+          <p class="photo-desc">Permukaan cangkang kumbang yang memancarkan warna irridescent — bukan karena pigmen, melainkan karena struktur nanometrik yang membelokkan cahaya.</p>
+        </div>
+      </div>
+ 
+      <!-- 7 -->
+      <div class="photo-card">
+        <div class="photo-placeholder mc7">
+          <svg class="scene-svg" viewBox="0 0 250 220" xmlns="http://www.w3.org/2000/svg">
+            <rect width="250" height="220" fill="#0a1a0a"/>
+            <!-- Fern spiral macro -->
+            <path d="M125,180 Q125,140 145,120 Q175,95 165,60 Q155,30 125,40 Q95,50 100,80 Q105,110 125,110" stroke="#3d6b3d" stroke-width="3" fill="none" opacity="0.9"/>
+            <!-- Tiny fronds along spiral -->
+            <path d="M135,150 Q150,145 145,135" stroke="#5c8a5c" stroke-width="1.5" fill="none" opacity="0.6"/>
+            <path d="M140,130 Q158,122 153,110" stroke="#5c8a5c" stroke-width="1.5" fill="none" opacity="0.6"/>
+            <path d="M150,112 Q168,100 160,88" stroke="#5c8a5c" stroke-width="1.5" fill="none" opacity="0.6"/>
+            <path d="M155,93 Q170,78 162,65" stroke="#5c8a5c" stroke-width="1.5" fill="none" opacity="0.5"/>
+            <!-- Smaller spiral tip -->
+            <path d="M125,40 Q110,35 108,50 Q110,65 125,60" stroke="#8baf8b" stroke-width="1.5" fill="none" opacity="0.7"/>
+            <!-- Background fern shapes -->
+            <path d="M50,200 Q80,160 100,130 Q90,120 70,140" stroke="#1a3a1a" stroke-width="1" fill="none" opacity="0.4"/>
+            <path d="M200,200 Q170,160 150,130 Q160,120 180,140" stroke="#1a3a1a" stroke-width="1" fill="none" opacity="0.4"/>
+          </svg>
+        </div>
+        <div class="photo-dot"></div>
+        <div class="photo-info">
+          <span class="photo-num">MK — 007</span>
+          <h3 class="photo-name">Spiral Pakis yang Belum Mekar</h3>
+          <p class="photo-desc">Geometri Fibonacci yang sempurna — tunas pakis yang menggulung menyimpan pola matematis alam semesta dalam dirinya.</p>
+        </div>
+      </div>
+ 
+    </div>
+  </div>
+ 
+  <footer>
+    <span class="footer-logo">Ciel's Photograph</span>
+    <p class="footer-copy">© 2024 Ciel's Photograph. Seluruh hak cipta dilindungi.</p>
+  </footer>
+ 
+</body>
+</html>
