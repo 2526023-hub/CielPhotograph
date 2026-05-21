@@ -1,396 +1,745 @@
 <!DOCTYPE html>
 <html lang="id">
 <head>
-  <meta charset="UTF-8"/>
+  <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Fenomena Alam — Ciel's Photograph</title>
+  <title>Ciel's Photograph</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=Josefin+Sans:wght@300;400;600&display=swap" rel="stylesheet">
   <style>
-    :root{--brown-deep:#2C1A0E;--brown-mid:#4A2C17;--brown-warm:#7A4A28;--brown-light:#B07D55;--forest-dark:#1A2E1A;--forest-mid:#2D4A2D;--forest-green:#3D6B3D;--forest-light:#5C8A5C;--sage:#8BAF8B;--cream:#F2E8D9;--gold:#C9A84C;--gold-light:#E8C87A;--ivory:#FAF5EC}
-    *,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
-    html{scroll-behavior:smooth}
-    body{background:#080810;color:var(--cream);font-family:'Josefin Sans',sans-serif;min-height:100vh;overflow-x:hidden}
-    body::before{content:'';position:fixed;inset:0;background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.04'/%3E%3C/svg%3E");pointer-events:none;z-index:1000;opacity:0.4}
+    :root {
+      --brown-deep:   #2C1A0E;
+      --brown-mid:    #4A2C17;
+      --brown-warm:   #7A4A28;
+      --brown-light:  #B07D55;
+      --forest-dark:  #1A2E1A;
+      --forest-mid:   #2D4A2D;
+      --forest-green: #3D6B3D;
+      --forest-light: #5C8A5C;
+      --sage:         #8BAF8B;
+      --cream:        #F2E8D9;
+      --gold:         #C9A84C;
+      --gold-light:   #E8C87A;
+      --ivory:        #FAF5EC;
+      --text-dark:    #1C1008;
+      --text-mid:     #4A3320;
+    }
  
-    nav{position:fixed;top:0;left:0;right:0;z-index:100;display:flex;align-items:center;justify-content:space-between;padding:0 60px;height:64px;background:linear-gradient(180deg,rgba(8,8,16,0.97) 0%,rgba(8,8,16,0.8) 100%);backdrop-filter:blur(12px);border-bottom:1px solid rgba(201,168,76,0.15)}
-    .nav-logo{font-family:'Cormorant Garamond',serif;font-size:1.3rem;font-style:italic;color:var(--gold-light);letter-spacing:0.05em;text-decoration:none}
-    .nav-links{display:flex;gap:40px;list-style:none}
-    .nav-links a{font-size:0.72rem;font-weight:600;letter-spacing:0.18em;text-transform:uppercase;color:var(--cream);text-decoration:none;position:relative;padding-bottom:4px;opacity:0.75;transition:opacity 0.3s,color 0.3s}
-    .nav-links a::after{content:'';position:absolute;bottom:0;left:0;width:0;height:1px;background:var(--gold);transition:width 0.3s ease}
-    .nav-links a:hover,.nav-links a.active{opacity:1;color:var(--gold-light)}
-    .nav-links a:hover::after,.nav-links a.active::after{width:100%}
+    *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
  
-    .page-header{padding:140px 60px 80px;position:relative;overflow:hidden;background:linear-gradient(160deg,#080810 0%,#0f0f1e 40%,#0a1a0a 100%)}
-    .page-header::before{content:'';position:absolute;right:100px;top:80px;width:300px;height:300px;border-radius:50%;background:radial-gradient(circle,rgba(61,107,61,0.15) 0%,transparent 70%)}
-    .page-header::after{content:'';position:absolute;right:200px;top:40px;width:500px;height:500px;border-radius:50%;background:radial-gradient(circle,rgba(30,30,80,0.15) 0%,transparent 70%)}
-    .page-tag{font-size:0.65rem;font-weight:600;letter-spacing:0.35em;text-transform:uppercase;color:var(--gold);display:block;margin-bottom:14px}
-    .page-title{font-family:'Cormorant Garamond',serif;font-size:clamp(2.5rem,6vw,5.5rem);font-weight:300;color:var(--ivory);line-height:0.9}
-    .page-title em{font-style:italic;color:var(--gold-light)}
-    .page-desc{font-size:0.8rem;line-height:1.8;color:var(--sage);max-width:520px;margin-top:24px;opacity:0.85}
-    .page-count{position:absolute;right:60px;bottom:80px;font-family:'Cormorant Garamond',serif;font-size:5rem;font-weight:300;color:rgba(201,168,76,0.06);line-height:1}
+    html { scroll-behavior: smooth; }
  
-    .gallery{padding:60px;max-width:1400px;margin:0 auto}
+    body {
+      background-color: var(--brown-deep);
+      color: var(--cream);
+      font-family: 'Josefin Sans', sans-serif;
+      min-height: 100vh;
+      overflow-x: hidden;
+    }
  
-    /* Asymmetric editorial grid */
-    .row-1{display:grid;grid-template-columns:3fr 2fr;gap:16px;margin-bottom:16px}
-    .row-2{display:grid;grid-template-columns:1fr 1fr 1fr;gap:16px;margin-bottom:16px}
-    .row-3{display:grid;grid-template-columns:1fr 2fr;gap:16px}
+    /* ─── NOISE TEXTURE OVERLAY ─── */
+    body::before {
+      content: '';
+      position: fixed; inset: 0;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.04'/%3E%3C/svg%3E");
+      pointer-events: none; z-index: 1000; opacity: 0.4;
+    }
  
-    .photo-card{position:relative;overflow:hidden;border-radius:3px;cursor:pointer;background:#080810}
-    .row-1 .photo-card{height:500px}
-    .row-2 .photo-card{height:300px}
-    .row-3 .photo-card{height:380px}
+    /* ─── NAV ─── */
+    nav {
+      position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 0 60px;
+      height: 64px;
+      background: linear-gradient(180deg, rgba(26,8,2,0.95) 0%, rgba(26,8,2,0.7) 100%);
+      backdrop-filter: blur(12px);
+      border-bottom: 1px solid rgba(201,168,76,0.2);
+    }
  
-    .photo-placeholder{position:absolute;inset:0}
-    .photo-card::after{content:'';position:absolute;inset:0;background:linear-gradient(0deg,rgba(5,3,15,0.92) 0%,rgba(5,3,15,0.1) 55%,transparent 100%);transition:opacity 0.4s}
-    .photo-card:hover::after{opacity:0.65}
+    .nav-logo {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1.3rem;
+      font-style: italic;
+      color: var(--gold-light);
+      letter-spacing: 0.05em;
+      text-decoration: none;
+    }
  
-    .photo-info{position:absolute;bottom:0;left:0;right:0;padding:24px 22px 20px;z-index:2}
-    .photo-num{font-size:0.58rem;font-weight:600;letter-spacing:0.25em;color:var(--gold);display:block;margin-bottom:6px}
-    .photo-name{font-family:'Cormorant Garamond',serif;font-size:1.2rem;font-weight:400;color:var(--ivory);margin-bottom:7px;line-height:1.2}
-    .row-1 .photo-card:first-child .photo-name{font-size:2.1rem}
-    .photo-desc{font-size:0.69rem;line-height:1.65;color:rgba(242,232,217,0.7);max-height:0;overflow:hidden;transition:max-height 0.5s,opacity 0.5s;opacity:0}
-    .photo-card:hover .photo-desc{max-height:100px;opacity:1}
+    .nav-links {
+      display: flex; gap: 40px; list-style: none;
+    }
  
-    .rarity-badge{position:absolute;top:18px;right:18px;z-index:3;display:flex;align-items:center;gap:6px;background:rgba(5,3,15,0.6);border:1px solid rgba(201,168,76,0.25);padding:5px 12px;font-size:0.58rem;font-weight:600;letter-spacing:0.2em;text-transform:uppercase;color:var(--gold-light);backdrop-filter:blur(8px);border-radius:20px}
-    .rarity-dot{width:6px;height:6px;border-radius:50%;background:var(--gold);animation:glow-dot 2s ease-in-out infinite}
-    @keyframes glow-dot{0%,100%{opacity:1;transform:scale(1)}50%{opacity:0.4;transform:scale(0.7)}}
+    .nav-links a {
+      font-family: 'Josefin Sans', sans-serif;
+      font-size: 0.72rem;
+      font-weight: 600;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: var(--cream);
+      text-decoration: none;
+      position: relative;
+      padding-bottom: 4px;
+      opacity: 0.75;
+      transition: opacity 0.3s, color 0.3s;
+    }
  
-    .scene-svg{position:absolute;inset:0;width:100%;height:100%}
+    .nav-links a::after {
+      content: '';
+      position: absolute; bottom: 0; left: 0;
+      width: 0; height: 1px;
+      background: var(--gold);
+      transition: width 0.3s ease;
+    }
  
-    footer{background:var(--brown-deep);border-top:1px solid rgba(201,168,76,0.12);padding:40px 60px;text-align:center;margin-top:0}
-    .footer-logo{font-family:'Cormorant Garamond',serif;font-size:1.8rem;font-style:italic;color:var(--gold-light);margin-bottom:12px;display:block}
-    .footer-copy{font-size:0.65rem;color:#b07d55;opacity:0.5}
+    .nav-links a:hover { opacity: 1; color: var(--gold-light); }
+    .nav-links a:hover::after { width: 100%; }
+    .nav-links a.active { opacity: 1; color: var(--gold-light); }
+    .nav-links a.active::after { width: 100%; }
+ 
+    /* ─── HERO / BANNER ─── */
+    .hero {
+      position: relative;
+      height: 100vh;
+      display: flex; flex-direction: column;
+      align-items: center; justify-content: center;
+      overflow: hidden;
+    }
+ 
+    .hero-bg {
+      position: absolute; inset: 0;
+      background:
+        radial-gradient(ellipse at 30% 60%, rgba(45,74,45,0.45) 0%, transparent 55%),
+        radial-gradient(ellipse at 75% 30%, rgba(74,44,23,0.5) 0%, transparent 50%),
+        linear-gradient(160deg, var(--brown-deep) 0%, var(--forest-dark) 45%, var(--brown-deep) 100%);
+    }
+ 
+    /* Decorative circles */
+    .hero-bg::before {
+      content: '';
+      position: absolute;
+      width: 600px; height: 600px;
+      border-radius: 50%;
+      border: 1px solid rgba(201,168,76,0.08);
+      top: 50%; left: 50%;
+      transform: translate(-50%,-50%);
+      animation: pulse-ring 6s ease-in-out infinite;
+    }
+ 
+    .hero-bg::after {
+      content: '';
+      position: absolute;
+      width: 900px; height: 900px;
+      border-radius: 50%;
+      border: 1px solid rgba(201,168,76,0.04);
+      top: 50%; left: 50%;
+      transform: translate(-50%,-50%);
+      animation: pulse-ring 6s ease-in-out infinite 1s;
+    }
+ 
+    @keyframes pulse-ring {
+      0%,100% { transform: translate(-50%,-50%) scale(1); opacity: 1; }
+      50% { transform: translate(-50%,-50%) scale(1.04); opacity: 0.5; }
+    }
+ 
+    .hero-eyebrow {
+      font-size: 0.68rem;
+      font-weight: 600;
+      letter-spacing: 0.35em;
+      text-transform: uppercase;
+      color: var(--gold);
+      margin-bottom: 22px;
+      opacity: 0;
+      animation: fade-up 1s ease forwards 0.4s;
+    }
+ 
+    .hero-title {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: clamp(4rem, 9vw, 8rem);
+      font-weight: 300;
+      line-height: 0.95;
+      text-align: center;
+      letter-spacing: -0.01em;
+      color: var(--ivory);
+      opacity: 0;
+      animation: fade-up 1.1s ease forwards 0.6s;
+    }
+ 
+    .hero-title em {
+      font-style: italic;
+      color: var(--gold-light);
+      display: block;
+    }
+ 
+    .hero-subtitle {
+      font-size: 0.78rem;
+      letter-spacing: 0.22em;
+      text-transform: uppercase;
+      color: var(--sage);
+      margin-top: 28px;
+      opacity: 0;
+      animation: fade-up 1.1s ease forwards 0.9s;
+    }
+ 
+    .hero-divider {
+      width: 60px; height: 1px;
+      background: linear-gradient(90deg, transparent, var(--gold), transparent);
+      margin: 32px auto 0;
+      opacity: 0;
+      animation: fade-up 1s ease forwards 1.1s;
+    }
+ 
+    .hero-scroll {
+      position: absolute; bottom: 40px; left: 50%;
+      transform: translateX(-50%);
+      display: flex; flex-direction: column; align-items: center; gap: 10px;
+      opacity: 0;
+      animation: fade-up 1s ease forwards 1.4s;
+    }
+ 
+    .hero-scroll span {
+      font-size: 0.62rem; letter-spacing: 0.3em; text-transform: uppercase;
+      color: var(--sage); opacity: 0.7;
+    }
+ 
+    .scroll-line {
+      width: 1px; height: 50px;
+      background: linear-gradient(180deg, var(--gold), transparent);
+      animation: scroll-pulse 2s ease-in-out infinite;
+    }
+ 
+    @keyframes scroll-pulse {
+      0%,100% { transform: scaleY(1); opacity: 1; }
+      50% { transform: scaleY(0.6); opacity: 0.4; }
+    }
+ 
+    @keyframes fade-up {
+      from { opacity: 0; transform: translateY(24px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+ 
+    /* ─── SECTION HEADER ─── */
+    .section-header {
+      text-align: center;
+      padding: 80px 40px 50px;
+    }
+ 
+    .section-tag {
+      font-size: 0.65rem; font-weight: 600;
+      letter-spacing: 0.35em; text-transform: uppercase;
+      color: var(--gold); display: block; margin-bottom: 14px;
+    }
+ 
+    .section-title {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: clamp(2rem, 4vw, 3rem);
+      font-weight: 300;
+      color: var(--ivory);
+    }
+ 
+    /* ─── FAVORITES GRID ─── */
+    .favorites {
+      padding: 0 60px 100px;
+      max-width: 1400px; margin: 0 auto;
+    }
+ 
+    .fav-grid {
+      display: grid;
+      grid-template-columns: repeat(12, 1fr);
+      grid-template-rows: auto;
+      gap: 16px;
+    }
+ 
+    /* Large featured card */
+    .fav-card:nth-child(1) { grid-column: 1 / 8; grid-row: 1 / 3; }
+    .fav-card:nth-child(2) { grid-column: 8 / 13; grid-row: 1; }
+    .fav-card:nth-child(3) { grid-column: 8 / 13; grid-row: 2; }
+    .fav-card:nth-child(4) { grid-column: 1 / 5; }
+    .fav-card:nth-child(5) { grid-column: 5 / 9; }
+    .fav-card:nth-child(6) { grid-column: 9 / 13; }
+ 
+    .fav-card {
+      position: relative;
+      overflow: hidden;
+      border-radius: 4px;
+      cursor: pointer;
+      background: var(--forest-dark);
+      min-height: 280px;
+    }
+ 
+    .fav-card:nth-child(1) { min-height: 560px; }
+ 
+    .fav-img {
+      width: 100%; height: 100%;
+      object-fit: cover;
+      display: block;
+      transition: transform 0.7s cubic-bezier(0.25,0.46,0.45,0.94);
+      filter: saturate(0.85) brightness(0.9);
+    }
+ 
+    /* Placeholder gradient images */
+    .fav-placeholder {
+      width: 100%; height: 100%;
+      min-height: inherit;
+    }
+ 
+    .ph-1 { background: linear-gradient(135deg, #1a3a1a 0%, #2d5e2d 40%, #1a2e1a 70%, #4a7c4a 100%); }
+    .ph-2 { background: linear-gradient(160deg, #3d1a0a 0%, #7a3a15 50%, #2c1a0e 100%); }
+    .ph-3 { background: linear-gradient(200deg, #0a1a0a 0%, #1a3d1a 60%, #2d4a2d 100%); }
+    .ph-4 { background: linear-gradient(120deg, #1a0a05 0%, #4a2c17 50%, #7a4a28 100%); }
+    .ph-5 { background: linear-gradient(150deg, #0a1a0a 0%, #2d4a2d 40%, #1a3a1a 100%); }
+    .ph-6 { background: linear-gradient(140deg, #2c1a0e 0%, #5c3a1e 40%, #3d2010 100%); }
+ 
+    /* Overlay */
+    .fav-card::after {
+      content: '';
+      position: absolute; inset: 0;
+      background: linear-gradient(0deg, rgba(20,8,2,0.85) 0%, rgba(20,8,2,0.2) 50%, transparent 100%);
+      transition: opacity 0.4s;
+    }
+ 
+    .fav-card:hover::after { opacity: 0.7; }
+ 
+    .fav-card-content {
+      position: absolute; bottom: 0; left: 0; right: 0;
+      padding: 28px 24px 22px;
+      z-index: 2;
+      transform: translateY(0);
+      transition: transform 0.4s ease;
+    }
+ 
+    .fav-category {
+      font-size: 0.6rem; font-weight: 600;
+      letter-spacing: 0.3em; text-transform: uppercase;
+      color: var(--gold); margin-bottom: 7px;
+    }
+ 
+    .fav-title {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1.4rem; font-weight: 400;
+      color: var(--ivory); line-height: 1.2;
+      margin-bottom: 8px;
+    }
+ 
+    .fav-card:nth-child(1) .fav-title { font-size: 2rem; }
+ 
+    .fav-desc {
+      font-size: 0.72rem; line-height: 1.6;
+      color: rgba(242,232,217,0.72);
+      max-height: 0; overflow: hidden;
+      transition: max-height 0.4s ease, opacity 0.4s ease;
+      opacity: 0;
+    }
+ 
+    .fav-card:hover .fav-desc { max-height: 80px; opacity: 1; }
+ 
+    /* Corner tag */
+    .fav-tag {
+      position: absolute; top: 16px; left: 16px; z-index: 3;
+      background: rgba(201,168,76,0.15);
+      border: 1px solid rgba(201,168,76,0.4);
+      padding: 4px 10px;
+      font-size: 0.58rem; font-weight: 600;
+      letter-spacing: 0.2em; text-transform: uppercase;
+      color: var(--gold-light);
+      backdrop-filter: blur(8px);
+      border-radius: 2px;
+    }
+ 
+    /* Camera icon svg overlay */
+    .fav-icon {
+      position: absolute; top: 50%; left: 50%;
+      transform: translate(-50%,-50%);
+      z-index: 2;
+      opacity: 0.12;
+      pointer-events: none;
+    }
+ 
+    /* ─── CATEGORIES STRIP ─── */
+    .categories-strip {
+      background: var(--forest-dark);
+      border-top: 1px solid rgba(201,168,76,0.1);
+      border-bottom: 1px solid rgba(201,168,76,0.1);
+      padding: 60px;
+    }
+ 
+    .cat-strip-inner {
+      max-width: 1400px; margin: 0 auto;
+      display: grid; grid-template-columns: repeat(4, 1fr); gap: 1px;
+      background: rgba(201,168,76,0.08);
+    }
+ 
+    .cat-item {
+      position: relative; overflow: hidden;
+      padding: 48px 36px;
+      background: var(--forest-dark);
+      text-decoration: none;
+      display: block;
+      transition: background 0.3s;
+    }
+ 
+    .cat-item::before {
+      content: '';
+      position: absolute; bottom: 0; left: 0;
+      width: 0; height: 2px;
+      background: var(--gold);
+      transition: width 0.4s ease;
+    }
+ 
+    .cat-item:hover { background: rgba(45,74,45,0.6); }
+    .cat-item:hover::before { width: 100%; }
+ 
+    .cat-num {
+      font-size: 0.6rem; font-weight: 600;
+      letter-spacing: 0.25em; color: var(--gold);
+      margin-bottom: 20px; display: block;
+    }
+ 
+    .cat-name {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1.8rem; font-weight: 300;
+      color: var(--ivory); line-height: 1.1;
+      margin-bottom: 14px;
+    }
+ 
+    .cat-desc {
+      font-size: 0.72rem; line-height: 1.6;
+      color: var(--sage); opacity: 0.8;
+    }
+ 
+    .cat-arrow {
+      position: absolute; bottom: 36px; right: 36px;
+      width: 32px; height: 32px;
+      border: 1px solid rgba(201,168,76,0.3);
+      border-radius: 50%;
+      display: flex; align-items: center; justify-content: center;
+      transition: border-color 0.3s, transform 0.3s;
+    }
+ 
+    .cat-item:hover .cat-arrow {
+      border-color: var(--gold);
+      transform: rotate(45deg);
+    }
+ 
+    /* ─── FOOTER ─── */
+    footer {
+      background: var(--brown-deep);
+      border-top: 1px solid rgba(201,168,76,0.12);
+      padding: 50px 60px;
+      text-align: center;
+    }
+ 
+    .footer-logo {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 2rem; font-style: italic;
+      color: var(--gold-light);
+      margin-bottom: 16px;
+      display: block;
+    }
+ 
+    .footer-tagline {
+      font-size: 0.68rem; letter-spacing: 0.3em;
+      text-transform: uppercase; color: var(--sage);
+      opacity: 0.6;
+    }
+ 
+    .footer-line {
+      width: 40px; height: 1px;
+      background: var(--gold);
+      margin: 24px auto;
+    }
+ 
+    .footer-copy {
+      font-size: 0.65rem; color: var(--brown-light);
+      opacity: 0.5;
+    }
+ 
+    /* SVG placeholder art */
+    .scene-svg { position: absolute; inset: 0; width: 100%; height: 100%; }
   </style>
 </head>
 <body>
  
+  <!-- NAV -->
   <nav>
     <a href="index.html" class="nav-logo">Ciel's Photograph</a>
     <ul class="nav-links">
-      <li><a href="index.html">Beranda</a></li>
+      <li><a href="index.html" class="active">Beranda</a></li>
       <li><a href="landscape.html">Landscape</a></li>
       <li><a href="makro.html">Makro</a></li>
       <li><a href="hewan.html">Hewan</a></li>
-      <li><a href="fenomena.html" class="active">Fenomena Alam</a></li>
+      <li><a href="fenomena.html">Fenomena Alam</a></li>
     </ul>
   </nav>
  
-  <div class="page-header">
-    <span class="page-tag">Kategori 04</span>
-    <h1 class="page-title">Foto <em>Fenomena Alam</em></h1>
-    <p class="page-desc">Peristiwa yang mengingatkan betapa kecilnya manusia — badai yang menggulung, cahaya yang menari, dan langit yang berkobar.</p>
-    <span class="page-count">07</span>
-  </div>
+  <!-- HERO -->
+  <section class="hero">
+    <div class="hero-bg"></div>
+    <div style="position:relative; z-index:2; text-align:center;">
+      <span class="hero-eyebrow">Galeri Fotografi</span>
+      <h1 class="hero-title">
+        Ciel's
+        <em>Photograph</em>
+      </h1>
+      <p class="hero-subtitle">Merekam keindahan alam yang tersembunyi</p>
+      <div class="hero-divider"></div>
+    </div>
+    <div class="hero-scroll">
+      <span>Gulir</span>
+      <div class="scroll-line"></div>
+    </div>
+  </section>
  
-  <div class="gallery">
- 
-    <!-- ROW 1 -->
-    <div class="row-1">
- 
-      <!-- 1: Aurora - Big -->
-      <div class="photo-card">
-        <div class="photo-placeholder" style="background:#050310">
-          <svg class="scene-svg" viewBox="0 0 700 500" xmlns="http://www.w3.org/2000/svg">
-            <defs>
-              <radialGradient id="aurora1" cx="50%" cy="40%">
-                <stop offset="0%" stop-color="#3d6b3d" stop-opacity="0.5"/>
-                <stop offset="50%" stop-color="#1e5e3e" stop-opacity="0.3"/>
-                <stop offset="100%" stop-color="#080810" stop-opacity="0"/>
-              </radialGradient>
-              <radialGradient id="aurora2" cx="40%" cy="35%">
-                <stop offset="0%" stop-color="#1e3e7a" stop-opacity="0.4"/>
-                <stop offset="100%" stop-color="#080810" stop-opacity="0"/>
-              </radialGradient>
-            </defs>
-            <rect width="700" height="500" fill="#050310"/>
-            <!-- Stars field -->
-            <circle cx="50" cy="30" r="1.5" fill="#fff" opacity="0.8"/>
-            <circle cx="120" cy="15" r="1" fill="#fff" opacity="0.6"/>
-            <circle cx="200" cy="45" r="2" fill="#fff" opacity="0.7"/>
-            <circle cx="310" cy="20" r="1.5" fill="#fff" opacity="0.9"/>
-            <circle cx="420" cy="38" r="1" fill="#fff" opacity="0.6"/>
-            <circle cx="530" cy="12" r="1.5" fill="#fff" opacity="0.8"/>
-            <circle cx="620" cy="55" r="2" fill="#fff" opacity="0.7"/>
-            <circle cx="80" cy="80" r="1" fill="#e8c87a" opacity="0.5"/>
-            <circle cx="450" cy="65" r="1" fill="#e8c87a" opacity="0.6"/>
-            <circle cx="680" cy="30" r="1.5" fill="#fff" opacity="0.5"/>
-            <circle cx="280" cy="70" r="1" fill="#fff" opacity="0.4"/>
-            <!-- Aurora curtains -->
-            <rect width="700" height="500" fill="url(#aurora1)"/>
-            <rect width="700" height="500" fill="url(#aurora2)"/>
-            <!-- Aurora ribbons -->
-            <path d="M0,180 Q100,120 200,160 Q300,200 400,140 Q500,80 600,130 Q650,155 700,130 L700,260 Q600,230 500,260 Q400,290 300,240 Q200,200 100,250 Q50,275 0,260Z" fill="#2d5e2d" opacity="0.3"/>
-            <path d="M0,200 Q80,150 180,185 Q280,220 380,165 Q480,110 580,155 Q640,178 700,155 L700,280 Q640,255 580,280 Q480,305 380,265 Q280,225 180,270 Q80,295 0,280Z" fill="#3d8b5c" opacity="0.2"/>
-            <path d="M0,155 Q120,110 240,145 Q360,180 480,120 Q560,90 700,110 L700,210 Q560,230 480,210 Q360,200 240,240 Q120,265 0,235Z" fill="#1e5e3e" opacity="0.25"/>
-            <!-- Purple aurora touch -->
-            <path d="M200,100 Q350,60 500,100 Q600,130 700,105 L700,180 Q600,200 500,175 Q350,145 200,175 Z" fill="#3d1e7a" opacity="0.15"/>
-            <!-- Horizon -->
-            <rect x="0" y="390" width="700" height="110" fill="#050208"/>
-            <!-- Mountain silhouettes -->
-            <polygon points="0,390 80,290 160,390" fill="#030106"/>
-            <polygon points="100,390 200,250 300,390" fill="#030106"/>
-            <polygon points="400,390 500,270 600,390" fill="#030106"/>
-            <polygon points="550,390 640,310 700,390" fill="#030106"/>
-            <!-- Frozen lake reflection -->
-            <rect x="0" y="400" width="700" height="90" fill="#050310" opacity="0.8"/>
-            <!-- Aurora reflection in ice -->
-            <ellipse cx="350" cy="430" rx="250" ry="30" fill="#2d5e2d" opacity="0.08"/>
-          </svg>
-        </div>
-        <div class="rarity-badge"><span class="rarity-dot"></span>Langka</div>
-        <div class="photo-info">
-          <span class="photo-num">FN — 001</span>
-          <h3 class="photo-name">Aurora Borealis — Tirai Langit</h3>
-          <p class="photo-desc">Partikel matahari yang bertemu medan magnet bumi dan meledak menjadi seni cahaya yang tak pernah sama dua malam berturut-turut. Difoto di atas danau beku Islandia pada suhu -18°C pukul 01.30 dini hari.</p>
-        </div>
-      </div>
- 
-      <!-- 2: Lightning -->
-      <div class="photo-card">
-        <div class="photo-placeholder" style="background:#050505">
-          <svg class="scene-svg" viewBox="0 0 500 500" xmlns="http://www.w3.org/2000/svg">
-            <rect width="500" height="500" fill="#050505"/>
-            <!-- Storm clouds -->
-            <rect width="500" height="250" fill="#0f0f0f" opacity="0.9"/>
-            <ellipse cx="150" cy="180" rx="120" ry="80" fill="#1a1a1a"/>
-            <ellipse cx="300" cy="150" rx="150" ry="100" fill="#151515"/>
-            <ellipse cx="420" cy="190" rx="100" ry="70" fill="#1a1a1a"/>
-            <!-- Lightning bolt -->
-            <path d="M280,0 L260,140 L290,140 L255,300 L280,300 L230,460 L245,460 L225,500" stroke="#e8c87a" stroke-width="3" fill="none" opacity="0.9"/>
-            <path d="M280,0 L260,140 L290,140 L255,300 L280,300 L230,460 L245,460 L225,500" stroke="#fff" stroke-width="1" fill="none" opacity="0.7"/>
-            <!-- Glow around lightning -->
-            <path d="M280,0 L260,140 L290,140 L255,300 L280,300 L230,460" stroke="#c9a84c" stroke-width="12" fill="none" opacity="0.08"/>
-            <!-- Secondary smaller bolts -->
-            <path d="M270,200 L252,260 L265,260 L245,320" stroke="#e8c87a" stroke-width="1.5" fill="none" opacity="0.5"/>
-            <path d="M263,320 L248,375 L258,375 L242,420" stroke="#e8c87a" stroke-width="1" fill="none" opacity="0.4"/>
-            <!-- Flash illumination on clouds -->
-            <ellipse cx="300" cy="180" rx="200" ry="100" fill="#c9a84c" opacity="0.04"/>
-            <!-- Dark silhouette landscape -->
-            <rect x="0" y="420" width="500" height="80" fill="#030303"/>
-            <polygon points="0,420 60,360 120,420" fill="#020202"/>
-            <polygon points="380,420 440,355 500,420" fill="#020202"/>
-            <!-- City silhouette -->
-            <rect x="150" y="400" width="15" height="20" fill="#020202"/>
-            <rect x="175" y="390" width="20" height="30" fill="#020202"/>
-            <rect x="220" y="395" width="12" height="25" fill="#020202"/>
-            <rect x="300" y="398" width="18" height="22" fill="#020202"/>
-          </svg>
-        </div>
-        <div class="rarity-badge"><span class="rarity-dot"></span>1/250 detik</div>
-        <div class="photo-info">
-          <span class="photo-num">FN — 002</span>
-          <h3 class="photo-name">Kilat yang Membelah Malam</h3>
-          <p class="photo-desc">Satu kilas dalam sepersekian detik yang menerangi seluruh cakrawala — 30.000 ampere energi murni alam.</p>
-        </div>
-      </div>
- 
+  <!-- FAVORITES -->
+  <section>
+    <div class="section-header">
+      <span class="section-tag">Pilihan Terbaik</span>
+      <h2 class="section-title">Foto Favorit</h2>
     </div>
  
-    <!-- ROW 2 -->
-    <div class="row-2">
+    <div class="favorites">
+      <div class="fav-grid">
  
-      <!-- 3: Solar Eclipse -->
-      <div class="photo-card">
-        <div class="photo-placeholder" style="background:#050308">
-          <svg class="scene-svg" viewBox="0 0 350 300" xmlns="http://www.w3.org/2000/svg">
-            <rect width="350" height="300" fill="#050308"/>
-            <!-- Corona glow -->
-            <circle cx="175" cy="150" r="120" fill="#c9a84c" opacity="0.04"/>
-            <circle cx="175" cy="150" r="90" fill="#e8c87a" opacity="0.06"/>
-            <circle cx="175" cy="150" r="70" fill="#c9a84c" opacity="0.08"/>
-            <!-- Solar corona rays -->
-            <line x1="175" y1="30" x2="175" y2="0" stroke="#e8c87a" stroke-width="1" opacity="0.3"/>
-            <line x1="255" y1="70" x2="285" y2="45" stroke="#e8c87a" stroke-width="1" opacity="0.25"/>
-            <line x1="295" y1="150" x2="330" y2="150" stroke="#e8c87a" stroke-width="1" opacity="0.3"/>
-            <line x1="255" y1="230" x2="285" y2="255" stroke="#e8c87a" stroke-width="1" opacity="0.25"/>
-            <line x1="175" y1="270" x2="175" y2="300" stroke="#e8c87a" stroke-width="1" opacity="0.3"/>
-            <line x1="95" y1="230" x2="65" y2="255" stroke="#e8c87a" stroke-width="1" opacity="0.25"/>
-            <line x1="55" y1="150" x2="20" y2="150" stroke="#e8c87a" stroke-width="1" opacity="0.3"/>
-            <line x1="95" y1="70" x2="65" y2="45" stroke="#e8c87a" stroke-width="1" opacity="0.25"/>
-            <!-- Moon disk covering sun -->
-            <circle cx="175" cy="150" r="58" fill="#030206"/>
-            <!-- Diamond ring effect -->
-            <circle cx="175" cy="150" r="59" fill="none" stroke="#e8c87a" stroke-width="2" opacity="0.6"/>
-            <circle cx="215" cy="118" r="6" fill="#e8c87a" opacity="0.9"/>
-            <circle cx="215" cy="118" r="10" fill="#e8c87a" opacity="0.2"/>
-            <!-- Stars visible during totality -->
-            <circle cx="80" cy="60" r="1.5" fill="#fff" opacity="0.8"/>
-            <circle cx="290" cy="80" r="1" fill="#fff" opacity="0.7"/>
-            <circle cx="50" cy="200" r="1.5" fill="#fff" opacity="0.6"/>
-            <circle cx="310" cy="220" r="1" fill="#fff" opacity="0.7"/>
-            <circle cx="120" cy="30" r="2" fill="#e8c87a" opacity="0.5"/>
+        <!-- Card 1 – Featured -->
+        <div class="fav-card">
+          <div class="fav-placeholder ph-1" style="position:absolute;inset:0;">
+            <svg class="scene-svg" viewBox="0 0 700 560" xmlns="http://www.w3.org/2000/svg">
+              <defs>
+                <radialGradient id="sky1" cx="50%" cy="30%">
+                  <stop offset="0%" stop-color="#2d5e2d" stop-opacity="0.6"/>
+                  <stop offset="100%" stop-color="#0a1a0a"/>
+                </radialGradient>
+              </defs>
+              <rect width="700" height="560" fill="url(#sky1)"/>
+              <!-- Mountains -->
+              <polygon points="0,560 120,220 240,380 340,160 480,300 600,180 700,260 700,560" fill="#1a3a1a" opacity="0.9"/>
+              <polygon points="0,560 80,320 180,440 280,260 400,360 560,220 700,310 700,560" fill="#0f2a0f" opacity="0.8"/>
+              <!-- Mist -->
+              <ellipse cx="350" cy="400" rx="400" ry="80" fill="#2d5e2d" opacity="0.15"/>
+              <!-- Stars -->
+              <circle cx="100" cy="60" r="1.5" fill="#e8c87a" opacity="0.8"/>
+              <circle cx="250" cy="40" r="1" fill="#e8c87a" opacity="0.6"/>
+              <circle cx="400" cy="80" r="1.5" fill="#e8c87a" opacity="0.7"/>
+              <circle cx="550" cy="50" r="1" fill="#e8c87a" opacity="0.5"/>
+              <circle cx="620" cy="100" r="2" fill="#e8c87a" opacity="0.9"/>
+              <circle cx="170" cy="110" r="1" fill="#fff" opacity="0.4"/>
+              <!-- Moon -->
+              <circle cx="560" cy="90" r="28" fill="#f2e8d9" opacity="0.85"/>
+              <circle cx="572" cy="82" r="22" fill="#2d5e2d" opacity="0.5"/>
+            </svg>
+          </div>
+          <span class="fav-tag">★ Featured</span>
+          <div class="fav-card-content">
+            <p class="fav-category">Landscape</p>
+            <h3 class="fav-title">Puncak Dalam Keheningan Malam</h3>
+            <p class="fav-desc">Pegunungan yang membisu di bawah cahaya bulan purnama — sebuah momen ketenangan yang jarang tertangkap kamera.</p>
+          </div>
+        </div>
+ 
+        <!-- Card 2 -->
+        <div class="fav-card">
+          <div class="fav-placeholder ph-2" style="position:absolute;inset:0;">
+            <svg class="scene-svg" viewBox="0 0 400 280" xmlns="http://www.w3.org/2000/svg">
+              <!-- Close-up leaf macro -->
+              <rect width="400" height="280" fill="#3d1a0a"/>
+              <ellipse cx="200" cy="140" rx="160" ry="90" fill="#2a4a1a" opacity="0.7"/>
+              <path d="M200,50 Q320,140 200,230 Q80,140 200,50Z" fill="#3d6b3d" stroke="#5c8a5c" stroke-width="0.5" opacity="0.8"/>
+              <!-- Vein -->
+              <line x1="200" y1="60" x2="200" y2="220" stroke="#8baf8b" stroke-width="1.5" opacity="0.7"/>
+              <line x1="200" y1="100" x2="260" y2="120" stroke="#8baf8b" stroke-width="0.7" opacity="0.5"/>
+              <line x1="200" y1="130" x2="155" y2="145" stroke="#8baf8b" stroke-width="0.7" opacity="0.5"/>
+              <line x1="200" y1="160" x2="255" y2="175" stroke="#8baf8b" stroke-width="0.7" opacity="0.5"/>
+              <!-- Dew drops -->
+              <circle cx="230" cy="110" r="5" fill="#f2e8d9" opacity="0.7"/>
+              <circle cx="175" cy="150" r="4" fill="#f2e8d9" opacity="0.6"/>
+              <circle cx="215" cy="170" r="3" fill="#f2e8d9" opacity="0.5"/>
+            </svg>
+          </div>
+          <div class="fav-card-content">
+            <p class="fav-category">Makro</p>
+            <h3 class="fav-title">Embun di Helai Daun</h3>
+            <p class="fav-desc">Butiran embun pagi yang memantulkan seluruh dunia dalam bola kristal kecilnya.</p>
+          </div>
+        </div>
+ 
+        <!-- Card 3 -->
+        <div class="fav-card">
+          <div class="fav-placeholder ph-3" style="position:absolute;inset:0;">
+            <svg class="scene-svg" viewBox="0 0 400 280" xmlns="http://www.w3.org/2000/svg">
+              <rect width="400" height="280" fill="#0a1a0a"/>
+              <!-- Bird silhouette -->
+              <ellipse cx="200" cy="140" rx="180" ry="100" fill="#1a3a1a" opacity="0.4"/>
+              <!-- Eagle body -->
+              <ellipse cx="200" cy="140" rx="45" ry="22" fill="#2c1a0e" opacity="0.9"/>
+              <!-- Wings spread -->
+              <path d="M155,138 Q100,110 60,125 Q90,135 110,148Z" fill="#1c1008" opacity="0.95"/>
+              <path d="M245,138 Q300,110 340,125 Q310,135 290,148Z" fill="#1c1008" opacity="0.95"/>
+              <!-- Head -->
+              <circle cx="200" cy="125" r="14" fill="#2c1a0e"/>
+              <circle cx="206" cy="122" r="3" fill="#c9a84c"/>
+              <!-- Tail -->
+              <path d="M175,152 Q200,165 225,152 L215,175 Q200,168 185,175Z" fill="#1c1008" opacity="0.85"/>
+              <!-- Sun glow background -->
+              <circle cx="200" cy="70" r="45" fill="#c9a84c" opacity="0.1"/>
+              <circle cx="200" cy="70" r="25" fill="#e8c87a" opacity="0.15"/>
+            </svg>
+          </div>
+          <div class="fav-card-content">
+            <p class="fav-category">Hewan</p>
+            <h3 class="fav-title">Elang Melayang Bebas</h3>
+            <p class="fav-desc">Kepak sayap yang penuh wibawa, menggores langit senja tanpa beban.</p>
+          </div>
+        </div>
+ 
+        <!-- Card 4 -->
+        <div class="fav-card">
+          <div class="fav-placeholder ph-4" style="position:absolute;inset:0;">
+            <svg class="scene-svg" viewBox="0 0 400 280" xmlns="http://www.w3.org/2000/svg">
+              <rect width="400" height="280" fill="#1a0a05"/>
+              <!-- Aurora -->
+              <path d="M0,100 Q100,60 200,90 Q300,120 400,80 L400,160 Q300,190 200,160 Q100,130 0,170Z" fill="#3d6b3d" opacity="0.35"/>
+              <path d="M0,130 Q80,100 200,120 Q320,140 400,110 L400,190 Q320,210 200,195 Q80,180 0,200Z" fill="#5c8a5c" opacity="0.25"/>
+              <!-- Stars -->
+              <circle cx="50" cy="30" r="1.5" fill="#fff" opacity="0.8"/>
+              <circle cx="150" cy="20" r="1" fill="#fff" opacity="0.6"/>
+              <circle cx="280" cy="40" r="2" fill="#fff" opacity="0.7"/>
+              <circle cx="370" cy="25" r="1.5" fill="#fff" opacity="0.5"/>
+              <!-- Ground -->
+              <rect x="0" y="220" width="400" height="60" fill="#0a0503"/>
+              <!-- Trees silhouette -->
+              <polygon points="30,220 40,180 50,220" fill="#050200"/>
+              <polygon points="350,220 360,175 370,220" fill="#050200"/>
+              <polygon points="10,220 25,190 40,220" fill="#050200"/>
+            </svg>
+          </div>
+          <div class="fav-card-content">
+            <p class="fav-category">Fenomena Alam</p>
+            <h3 class="fav-title">Aurora di Ufuk Utara</h3>
+            <p class="fav-desc">Tirai cahaya hijau menari-nari di langit malam yang dingin dan sunyi.</p>
+          </div>
+        </div>
+ 
+        <!-- Card 5 -->
+        <div class="fav-card">
+          <div class="fav-placeholder ph-5" style="position:absolute;inset:0;">
+            <svg class="scene-svg" viewBox="0 0 400 280" xmlns="http://www.w3.org/2000/svg">
+              <rect width="400" height="280" fill="#0d1f0d"/>
+              <!-- Forest path -->
+              <rect x="0" y="0" width="400" height="280" fill="#1a3a1a" opacity="0.5"/>
+              <!-- Tree trunks -->
+              <rect x="50" y="0" width="18" height="280" fill="#0f1f0f" opacity="0.9"/>
+              <rect x="130" y="0" width="14" height="280" fill="#0a1a0a" opacity="0.9"/>
+              <rect x="250" y="0" width="20" height="280" fill="#0f1f0f" opacity="0.9"/>
+              <rect x="340" y="0" width="12" height="280" fill="#0a1a0a" opacity="0.9"/>
+              <!-- Light beam -->
+              <path d="M170,0 L210,0 L240,280 L140,280Z" fill="#f2e8d9" opacity="0.05"/>
+              <!-- Canopy -->
+              <rect x="0" y="0" width="400" height="80" fill="#0a1a0a" opacity="0.7"/>
+              <!-- Moss/ground -->
+              <ellipse cx="200" cy="260" rx="200" ry="30" fill="#1a3a1a" opacity="0.6"/>
+            </svg>
+          </div>
+          <div class="fav-card-content">
+            <p class="fav-category">Landscape</p>
+            <h3 class="fav-title">Lorong Hutan Hujan</h3>
+            <p class="fav-desc">Kanopi lebat yang mengukir cahaya menjadi lukisan abstrak di lantai hutan.</p>
+          </div>
+        </div>
+ 
+        <!-- Card 6 -->
+        <div class="fav-card">
+          <div class="fav-placeholder ph-6" style="position:absolute;inset:0;">
+            <svg class="scene-svg" viewBox="0 0 400 280" xmlns="http://www.w3.org/2000/svg">
+              <rect width="400" height="280" fill="#2c1a0e"/>
+              <!-- Spider macro -->
+              <circle cx="200" cy="140" rx="200" ry="100" fill="none"/>
+              <!-- Web threads -->
+              <line x1="200" y1="60" x2="200" y2="220" stroke="#f2e8d9" stroke-width="0.5" opacity="0.3"/>
+              <line x1="120" y1="80" x2="280" y2="200" stroke="#f2e8d9" stroke-width="0.5" opacity="0.3"/>
+              <line x1="280" y1="80" x2="120" y2="200" stroke="#f2e8d9" stroke-width="0.5" opacity="0.3"/>
+              <line x1="80" y1="140" x2="320" y2="140" stroke="#f2e8d9" stroke-width="0.5" opacity="0.3"/>
+              <!-- Web rings -->
+              <circle cx="200" cy="140" r="30" fill="none" stroke="#f2e8d9" stroke-width="0.5" opacity="0.25"/>
+              <circle cx="200" cy="140" r="60" fill="none" stroke="#f2e8d9" stroke-width="0.5" opacity="0.2"/>
+              <circle cx="200" cy="140" r="90" fill="none" stroke="#f2e8d9" stroke-width="0.5" opacity="0.15"/>
+              <!-- Spider body -->
+              <ellipse cx="200" cy="140" rx="12" ry="8" fill="#1c1008"/>
+              <ellipse cx="200" cy="132" rx="7" ry="6" fill="#2c1a0e"/>
+              <!-- Legs -->
+              <line x1="188" y1="137" x2="162" y2="125" stroke="#1c1008" stroke-width="1.5"/>
+              <line x1="188" y1="140" x2="158" y2="138" stroke="#1c1008" stroke-width="1.5"/>
+              <line x1="188" y1="143" x2="162" y2="155" stroke="#1c1008" stroke-width="1.5"/>
+              <line x1="212" y1="137" x2="238" y2="125" stroke="#1c1008" stroke-width="1.5"/>
+              <line x1="212" y1="140" x2="242" y2="138" stroke="#1c1008" stroke-width="1.5"/>
+              <line x1="212" y1="143" x2="238" y2="155" stroke="#1c1008" stroke-width="1.5"/>
+            </svg>
+          </div>
+          <div class="fav-card-content">
+            <p class="fav-category">Makro</p>
+            <h3 class="fav-title">Jaring Laba-laba Berkilau</h3>
+            <p class="fav-desc">Arsitektur alami yang sempurna — setiap benang menjadi cermin bagi sinar pagi.</p>
+          </div>
+        </div>
+ 
+      </div>
+    </div>
+  </section>
+ 
+  <!-- CATEGORIES STRIP -->
+  <section class="categories-strip">
+    <div class="cat-strip-inner">
+ 
+      <a href="landscape.html" class="cat-item">
+        <span class="cat-num">01</span>
+        <h3 class="cat-name">Landscape</h3>
+        <p class="cat-desc">Bentang alam yang luas — dari puncak gunung hingga lembah sungai yang tenang.</p>
+        <div class="cat-arrow">
+          <svg width="12" height="12" viewBox="0 0 12 12" fill="none">
+            <path d="M2 10L10 2M10 2H4M10 2V8" stroke="#c9a84c" stroke-width="1.5" stroke-linecap="round"/>
           </svg>
         </div>
-        <div class="rarity-badge"><span class="rarity-dot"></span>Gerhana Total</div>
-        <div class="photo-info">
-          <span class="photo-num">FN — 003</span>
-          <h3 class="photo-name">Mahkota Matahari</h3>
-          <p class="photo-desc">Gerhana total — satu-satunya saat korona matahari terlihat mata telanjang, bercahaya bak mahkota dewa.</p>
-        </div>
-      </div>
+      </a>
  
-      <!-- 4: Supercell storm -->
-      <div class="photo-card">
-        <div class="photo-placeholder" style="background:#0a0a05">
-          <svg class="scene-svg" viewBox="0 0 350 300" xmlns="http://www.w3.org/2000/svg">
-            <rect width="350" height="300" fill="#0a0805"/>
-            <!-- Storm rotation -->
-            <defs><radialGradient id="storm" cx="50%" cy="45%"><stop offset="0%" stop-color="#1a1a05" stop-opacity="0.8"/><stop offset="60%" stop-color="#0a0a00" stop-opacity="0.5"/><stop offset="100%" stop-color="#050500" stop-opacity="0"/></radialGradient></defs>
-            <circle cx="175" cy="135" r="150" fill="url(#storm)"/>
-            <!-- Rotation bands -->
-            <path d="M50,120 Q120,60 200,80 Q280,100 310,150 Q300,210 240,230 Q160,245 100,210 Q40,175 50,120Z" fill="none" stroke="#c9a84c" stroke-width="0.5" opacity="0.2"/>
-            <path d="M80,130 Q140,80 210,95 Q270,110 290,155 Q280,205 225,220 Q155,232 105,205 Q68,182 80,130Z" fill="none" stroke="#c9a84c" stroke-width="0.5" opacity="0.15"/>
-            <!-- Funnel cloud forming -->
-            <path d="M155,180 Q163,210 158,240 Q162,260 165,280" stroke="#1a1a08" stroke-width="15" fill="none" opacity="0.9"/>
-            <path d="M155,180 Q163,210 158,240 Q162,260 165,280" stroke="#2a2a10" stroke-width="8" fill="none" opacity="0.7"/>
-            <!-- Green tinge (tornado sky) -->
-            <rect width="350" height="300" fill="#0a1a00" opacity="0.15"/>
-            <!-- Wall cloud -->
-            <ellipse cx="165" cy="185" rx="80" ry="30" fill="#1a1a05" opacity="0.8"/>
-            <!-- Ground -->
-            <rect x="0" y="270" width="350" height="30" fill="#050500"/>
-            <!-- Dust swirl at base -->
-            <ellipse cx="165" cy="275" rx="30" ry="8" fill="#3d2010" opacity="0.4"/>
+      <a href="makro.html" class="cat-item">
+        <span class="cat-num">02</span>
+        <h3 class="cat-name">Makro</h3>
+        <p class="cat-desc">Dunia yang tak terlihat mata — keajaiban tersembunyi dalam skala milimeter.</p>
+        <div class="cat-arrow">
+          <svg width="12" height="12" viewBox="0 0 12 12" fill="none">
+            <path d="M2 10L10 2M10 2H4M10 2V8" stroke="#c9a84c" stroke-width="1.5" stroke-linecap="round"/>
           </svg>
         </div>
-        <div class="rarity-badge"><span class="rarity-dot"></span>Supercell</div>
-        <div class="photo-info">
-          <span class="photo-num">FN — 004</span>
-          <h3 class="photo-name">Kelahiran Tornado</h3>
-          <p class="photo-desc">Pusaran raksasa yang turun dari langit — angin 300 km/jam yang mengunci pandangan siapa pun yang menyaksikannya.</p>
-        </div>
-      </div>
+      </a>
  
-      <!-- 5: Fire rainbow / circumzenithal arc -->
-      <div class="photo-card">
-        <div class="photo-placeholder" style="background:#0a0508">
-          <svg class="scene-svg" viewBox="0 0 350 300" xmlns="http://www.w3.org/2000/svg">
-            <rect width="350" height="300" fill="#060408"/>
-            <!-- Clouds -->
-            <ellipse cx="175" cy="80" rx="140" ry="60" fill="#1a0a18" opacity="0.7"/>
-            <ellipse cx="120" cy="70" rx="100" ry="50" fill="#150815" opacity="0.6"/>
-            <!-- Fire rainbow arc - circumzenithal arc -->
-            <path d="M60,130 Q175,60 290,130" fill="none" stroke="#8B0000" stroke-width="8" opacity="0.5"/>
-            <path d="M65,138 Q175,68 285,138" fill="none" stroke="#c9a84c" stroke-width="7" opacity="0.6"/>
-            <path d="M70,146 Q175,76 280,146" fill="none" stroke="#2d5e2d" stroke-width="7" opacity="0.5"/>
-            <path d="M75,154 Q175,84 275,154" fill="none" stroke="#1e3e7a" stroke-width="6" opacity="0.5"/>
-            <path d="M80,162 Q175,92 270,162" fill="none" stroke="#4a0080" stroke-width="5" opacity="0.4"/>
-            <!-- Glow -->
-            <path d="M62,134 Q175,64 288,134" fill="none" stroke="#fff" stroke-width="20" opacity="0.04"/>
-            <!-- Ice crystals suggestion -->
-            <circle cx="100" cy="110" r="2" fill="#f2e8d9" opacity="0.3"/>
-            <circle cx="175" cy="85" r="2" fill="#f2e8d9" opacity="0.3"/>
-            <circle cx="250" cy="112" r="2" fill="#f2e8d9" opacity="0.3"/>
-            <!-- Stars -->
-            <circle cx="30" cy="30" r="1.5" fill="#fff" opacity="0.5"/>
-            <circle cx="320" cy="40" r="1" fill="#fff" opacity="0.5"/>
-            <!-- Silhouette landscape -->
-            <rect x="0" y="250" width="350" height="50" fill="#030203"/>
+      <a href="hewan.html" class="cat-item">
+        <span class="cat-num">03</span>
+        <h3 class="cat-name">Hewan</h3>
+        <p class="cat-desc">Ekspresi dan gestur satwa liar yang penuh karakter dan kehidupan.</p>
+        <div class="cat-arrow">
+          <svg width="12" height="12" viewBox="0 0 12 12" fill="none">
+            <path d="M2 10L10 2M10 2H4M10 2V8" stroke="#c9a84c" stroke-width="1.5" stroke-linecap="round"/>
           </svg>
         </div>
-        <div class="rarity-badge"><span class="rarity-dot"></span>Optik Langka</div>
-        <div class="photo-info">
-          <span class="photo-num">FN — 005</span>
-          <h3 class="photo-name">Pelangi Api di Langit Malam</h3>
-          <p class="photo-desc">Busur circumzenithal yang terbentuk dari kristal es di awan tinggi — pelangi yang melengkung ke atas, bukan ke bawah.</p>
+      </a>
+ 
+      <a href="fenomena.html" class="cat-item">
+        <span class="cat-num">04</span>
+        <h3 class="cat-name">Fenomena Alam</h3>
+        <p class="cat-desc">Peristiwa langka yang mengingatkan betapa kecilnya kita di hadapan alam.</p>
+        <div class="cat-arrow">
+          <svg width="12" height="12" viewBox="0 0 12 12" fill="none">
+            <path d="M2 10L10 2M10 2H4M10 2V8" stroke="#c9a84c" stroke-width="1.5" stroke-linecap="round"/>
+          </svg>
         </div>
-      </div>
+      </a>
  
     </div>
+  </section>
  
-    <!-- ROW 3 -->
-    <div class="row-3">
- 
-      <!-- 6: Moonbow -->
-      <div class="photo-card">
-        <div class="photo-placeholder" style="background:#030308">
-          <svg class="scene-svg" viewBox="0 0 400 380" xmlns="http://www.w3.org/2000/svg">
-            <rect width="400" height="380" fill="#030308"/>
-            <!-- Stars -->
-            <circle cx="40" cy="40" r="1.5" fill="#fff" opacity="0.8"/>
-            <circle cx="100" cy="20" r="1" fill="#fff" opacity="0.6"/>
-            <circle cx="200" cy="35" r="2" fill="#e8c87a" opacity="0.5"/>
-            <circle cx="320" cy="15" r="1.5" fill="#fff" opacity="0.7"/>
-            <circle cx="370" cy="50" r="1" fill="#fff" opacity="0.6"/>
-            <circle cx="60" cy="100" r="1" fill="#fff" opacity="0.4"/>
-            <circle cx="340" cy="80" r="1.5" fill="#fff" opacity="0.5"/>
-            <!-- Moon -->
-            <circle cx="350" cy="60" r="30" fill="#f2e8d9" opacity="0.25"/>
-            <circle cx="350" cy="60" r="20" fill="#f2e8d9" opacity="0.35"/>
-            <!-- Moonbow (white rainbow at night) -->
-            <path d="M20,280 Q200,100 380,280" fill="none" stroke="#f2e8d9" stroke-width="12" opacity="0.06"/>
-            <path d="M25,285 Q200,108 375,285" fill="none" stroke="#8baf8b" stroke-width="6" opacity="0.08"/>
-            <path d="M30,290 Q200,116 370,290" fill="none" stroke="#c9a84c" stroke-width="4" opacity="0.07"/>
-            <path d="M35,295 Q200,124 365,295" fill="none" stroke="#b07d55" stroke-width="4" opacity="0.06"/>
-            <!-- Glow line -->
-            <path d="M20,280 Q200,100 380,280" fill="none" stroke="#fff" stroke-width="30" opacity="0.025"/>
-            <!-- Waterfall mist at base -->
-            <ellipse cx="200" cy="330" rx="150" ry="35" fill="#f2e8d9" opacity="0.04"/>
-            <ellipse cx="200" cy="340" rx="130" ry="25" fill="#f2e8d9" opacity="0.05"/>
-            <!-- Ground/rock silhouette -->
-            <rect x="0" y="340" width="400" height="40" fill="#020205"/>
-            <polygon points="150,340 200,300 250,340" fill="#020205"/>
-          </svg>
-        </div>
-        <div class="rarity-badge"><span class="rarity-dot"></span>Lunar Rainbow</div>
-        <div class="photo-info">
-          <span class="photo-num">FN — 006</span>
-          <h3 class="photo-name">Pelangi Bulan di Air Terjun</h3>
-          <p class="photo-desc">Fenomena ultra-langka — pelangi yang dibentuk bukan oleh matahari, melainkan oleh cahaya bulan purnama menembus percikan air terjun di tengah malam.</p>
-        </div>
-      </div>
- 
-      <!-- 7: Bioluminescence -->
-      <div class="photo-card">
-        <div class="photo-placeholder" style="background:#030510">
-          <svg class="scene-svg" viewBox="0 0 700 380" xmlns="http://www.w3.org/2000/svg">
-            <rect width="700" height="380" fill="#030510"/>
-            <!-- Night sky -->
-            <circle cx="100" cy="40" r="1.5" fill="#fff" opacity="0.6"/>
-            <circle cx="300" cy="25" r="1" fill="#fff" opacity="0.5"/>
-            <circle cx="500" cy="35" r="2" fill="#e8c87a" opacity="0.4"/>
-            <circle cx="620" cy="20" r="1.5" fill="#fff" opacity="0.6"/>
-            <!-- Ocean/beach -->
-            <rect x="0" y="220" width="700" height="160" fill="#030818"/>
-            <!-- Bioluminescent waves -->
-            <path d="M0,240 Q80,215 160,235 Q240,255 320,230 Q400,205 480,225 Q560,245 640,225 Q670,218 700,228 L700,270 Q670,258 640,265 Q560,275 480,255 Q400,245 320,270 Q240,285 160,265 Q80,250 0,270Z" fill="#0a1e5e" opacity="0.4"/>
-            <!-- Blue glow from bioluminescence -->
-            <path d="M0,245 Q100,225 200,240 Q300,255 400,235 Q500,215 600,235 Q650,245 700,235" fill="none" stroke="#1e4aaa" stroke-width="4" opacity="0.5"/>
-            <path d="M0,252 Q100,232 200,247 Q300,262 400,242 Q500,222 600,242" fill="none" stroke="#2d6bcc" stroke-width="2" opacity="0.4"/>
-            <!-- Glowing dots in water -->
-            <circle cx="120" cy="255" r="4" fill="#1e6aff" opacity="0.4"/>
-            <circle cx="200" cy="248" r="3" fill="#2d8aff" opacity="0.5"/>
-            <circle cx="350" cy="262" r="5" fill="#1e6aff" opacity="0.35"/>
-            <circle cx="450" cy="250" r="4" fill="#3d9aff" opacity="0.4"/>
-            <circle cx="580" cy="258" r="3" fill="#2d8aff" opacity="0.45"/>
-            <circle cx="650" cy="245" r="4" fill="#1e6aff" opacity="0.4"/>
-            <!-- Wet sand reflection -->
-            <rect x="0" y="310" width="700" height="20" fill="#050a1a" opacity="0.8"/>
-            <ellipse cx="350" cy="318" rx="300" ry="8" fill="#1e4aaa" opacity="0.07"/>
-            <!-- Footprints silhouette -->
-            <ellipse cx="250" cy="315" rx="8" ry="4" fill="#020510" opacity="0.6"/>
-            <ellipse cx="265" cy="320" rx="8" ry="4" fill="#020510" opacity="0.6"/>
-            <ellipse cx="280" cy="313" rx="8" ry="4" fill="#020510" opacity="0.6"/>
-            <!-- Horizon glow -->
-            <rect x="0" y="215" width="700" height="25" fill="#0a1e5e" opacity="0.2"/>
-          </svg>
-        </div>
-        <div class="rarity-badge"><span class="rarity-dot"></span>Bioluminescens</div>
-        <div class="photo-info">
-          <span class="photo-num">FN — 007</span>
-          <h3 class="photo-name">Laut yang Bercahaya Sendiri</h3>
-          <p class="photo-desc">Fitoplankton bioluminescen yang mengubah setiap deburan ombak menjadi percikan api biru — fenomena yang hanya terjadi di beberapa pantai di dunia dan hanya bisa dilihat tanpa cahaya buatan.</p>
-        </div>
-      </div>
- 
-    </div>
- 
-  </div>
- 
+  <!-- FOOTER -->
   <footer>
     <span class="footer-logo">Ciel's Photograph</span>
+    <p class="footer-tagline">Merekam keindahan dunia, satu bidikan dalam satu waktu</p>
+    <div class="footer-line"></div>
     <p class="footer-copy">© 2024 Ciel's Photograph. Seluruh hak cipta dilindungi.</p>
   </footer>
  
