@@ -267,27 +267,22 @@
     }
  
     .fav-card:nth-child(1) { min-height: 560px; }
- 
-    .fav-img {
-      width: 100%; height: 100%;
+
+    /* ─── IMAGE STYLES ─── */
+    .fav-card .fav-img {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
       object-fit: cover;
       display: block;
-      transition: transform 0.7s cubic-bezier(0.25,0.46,0.45,0.94);
+      transition: transform 0.7s cubic-bezier(0.25, 0.46, 0.45, 0.94);
       filter: saturate(0.85) brightness(0.9);
     }
- 
-    /* Placeholder gradient images */
-    .fav-placeholder {
-      width: 100%; height: 100%;
-      min-height: inherit;
+
+    .fav-card:hover .fav-img {
+      transform: scale(1.04);
     }
- 
-    .ph-1 { background: linear-gradient(135deg, #1a3a1a 0%, #2d5e2d 40%, #1a2e1a 70%, #4a7c4a 100%); }
-    .ph-2 { background: linear-gradient(160deg, #3d1a0a 0%, #7a3a15 50%, #2c1a0e 100%); }
-    .ph-3 { background: linear-gradient(200deg, #0a1a0a 0%, #1a3d1a 60%, #2d4a2d 100%); }
-    .ph-4 { background: linear-gradient(120deg, #1a0a05 0%, #4a2c17 50%, #7a4a28 100%); }
-    .ph-5 { background: linear-gradient(150deg, #0a1a0a 0%, #2d4a2d 40%, #1a3a1a 100%); }
-    .ph-6 { background: linear-gradient(140deg, #2c1a0e 0%, #5c3a1e 40%, #3d2010 100%); }
  
     /* Overlay */
     .fav-card::after {
@@ -343,15 +338,6 @@
       color: var(--gold-light);
       backdrop-filter: blur(8px);
       border-radius: 2px;
-    }
- 
-    /* Camera icon svg overlay */
-    .fav-icon {
-      position: absolute; top: 50%; left: 50%;
-      transform: translate(-50%,-50%);
-      z-index: 2;
-      opacity: 0.12;
-      pointer-events: none;
     }
  
     /* ─── CATEGORIES STRIP ─── */
@@ -452,9 +438,6 @@
       font-size: 0.65rem; color: var(--brown-light);
       opacity: 0.5;
     }
- 
-    /* SVG placeholder art */
-    .scene-svg { position: absolute; inset: 0; width: 100%; height: 100%; }
   </style>
 </head>
 <body>
@@ -500,33 +483,13 @@
       <div class="fav-grid">
  
         <!-- Card 1 – Featured -->
+        <!-- Ganti "foto1.jpg" dengan path/nama file gambar Anda -->
         <div class="fav-card">
-          <div class="fav-placeholder ph-1" style="position:absolute;inset:0;">
-            <svg class="scene-svg" viewBox="0 0 700 560" xmlns="http://www.w3.org/2000/svg">
-              <defs>
-                <radialGradient id="sky1" cx="50%" cy="30%">
-                  <stop offset="0%" stop-color="#2d5e2d" stop-opacity="0.6"/>
-                  <stop offset="100%" stop-color="#0a1a0a"/>
-                </radialGradient>
-              </defs>
-              <rect width="700" height="560" fill="url(#sky1)"/>
-              <!-- Mountains -->
-              <polygon points="0,560 120,220 240,380 340,160 480,300 600,180 700,260 700,560" fill="#1a3a1a" opacity="0.9"/>
-              <polygon points="0,560 80,320 180,440 280,260 400,360 560,220 700,310 700,560" fill="#0f2a0f" opacity="0.8"/>
-              <!-- Mist -->
-              <ellipse cx="350" cy="400" rx="400" ry="80" fill="#2d5e2d" opacity="0.15"/>
-              <!-- Stars -->
-              <circle cx="100" cy="60" r="1.5" fill="#e8c87a" opacity="0.8"/>
-              <circle cx="250" cy="40" r="1" fill="#e8c87a" opacity="0.6"/>
-              <circle cx="400" cy="80" r="1.5" fill="#e8c87a" opacity="0.7"/>
-              <circle cx="550" cy="50" r="1" fill="#e8c87a" opacity="0.5"/>
-              <circle cx="620" cy="100" r="2" fill="#e8c87a" opacity="0.9"/>
-              <circle cx="170" cy="110" r="1" fill="#fff" opacity="0.4"/>
-              <!-- Moon -->
-              <circle cx="560" cy="90" r="28" fill="#f2e8d9" opacity="0.85"/>
-              <circle cx="572" cy="82" r="22" fill="#2d5e2d" opacity="0.5"/>
-            </svg>
-          </div>
+          <img
+            class="fav-img"
+            src="foto1.jpg"
+            alt="Puncak Dalam Keheningan Malam"
+          />
           <span class="fav-tag">★ Featured</span>
           <div class="fav-card-content">
             <p class="fav-category">Landscape</p>
@@ -536,24 +499,13 @@
         </div>
  
         <!-- Card 2 -->
+        <!-- Ganti "foto2.jpg" dengan path/nama file gambar Anda -->
         <div class="fav-card">
-          <div class="fav-placeholder ph-2" style="position:absolute;inset:0;">
-            <svg class="scene-svg" viewBox="0 0 400 280" xmlns="http://www.w3.org/2000/svg">
-              <!-- Close-up leaf macro -->
-              <rect width="400" height="280" fill="#3d1a0a"/>
-              <ellipse cx="200" cy="140" rx="160" ry="90" fill="#2a4a1a" opacity="0.7"/>
-              <path d="M200,50 Q320,140 200,230 Q80,140 200,50Z" fill="#3d6b3d" stroke="#5c8a5c" stroke-width="0.5" opacity="0.8"/>
-              <!-- Vein -->
-              <line x1="200" y1="60" x2="200" y2="220" stroke="#8baf8b" stroke-width="1.5" opacity="0.7"/>
-              <line x1="200" y1="100" x2="260" y2="120" stroke="#8baf8b" stroke-width="0.7" opacity="0.5"/>
-              <line x1="200" y1="130" x2="155" y2="145" stroke="#8baf8b" stroke-width="0.7" opacity="0.5"/>
-              <line x1="200" y1="160" x2="255" y2="175" stroke="#8baf8b" stroke-width="0.7" opacity="0.5"/>
-              <!-- Dew drops -->
-              <circle cx="230" cy="110" r="5" fill="#f2e8d9" opacity="0.7"/>
-              <circle cx="175" cy="150" r="4" fill="#f2e8d9" opacity="0.6"/>
-              <circle cx="215" cy="170" r="3" fill="#f2e8d9" opacity="0.5"/>
-            </svg>
-          </div>
+          <img
+            class="fav-img"
+            src="foto2.jpg"
+            alt="Embun di Helai Daun"
+          />
           <div class="fav-card-content">
             <p class="fav-category">Makro</p>
             <h3 class="fav-title">Embun di Helai Daun</h3>
@@ -562,27 +514,13 @@
         </div>
  
         <!-- Card 3 -->
+        <!-- Ganti "foto3.jpg" dengan path/nama file gambar Anda -->
         <div class="fav-card">
-          <div class="fav-placeholder ph-3" style="position:absolute;inset:0;">
-            <svg class="scene-svg" viewBox="0 0 400 280" xmlns="http://www.w3.org/2000/svg">
-              <rect width="400" height="280" fill="#0a1a0a"/>
-              <!-- Bird silhouette -->
-              <ellipse cx="200" cy="140" rx="180" ry="100" fill="#1a3a1a" opacity="0.4"/>
-              <!-- Eagle body -->
-              <ellipse cx="200" cy="140" rx="45" ry="22" fill="#2c1a0e" opacity="0.9"/>
-              <!-- Wings spread -->
-              <path d="M155,138 Q100,110 60,125 Q90,135 110,148Z" fill="#1c1008" opacity="0.95"/>
-              <path d="M245,138 Q300,110 340,125 Q310,135 290,148Z" fill="#1c1008" opacity="0.95"/>
-              <!-- Head -->
-              <circle cx="200" cy="125" r="14" fill="#2c1a0e"/>
-              <circle cx="206" cy="122" r="3" fill="#c9a84c"/>
-              <!-- Tail -->
-              <path d="M175,152 Q200,165 225,152 L215,175 Q200,168 185,175Z" fill="#1c1008" opacity="0.85"/>
-              <!-- Sun glow background -->
-              <circle cx="200" cy="70" r="45" fill="#c9a84c" opacity="0.1"/>
-              <circle cx="200" cy="70" r="25" fill="#e8c87a" opacity="0.15"/>
-            </svg>
-          </div>
+          <img
+            class="fav-img"
+            src="foto3.jpg"
+            alt="Elang Melayang Bebas"
+          />
           <div class="fav-card-content">
             <p class="fav-category">Hewan</p>
             <h3 class="fav-title">Elang Melayang Bebas</h3>
@@ -591,26 +529,13 @@
         </div>
  
         <!-- Card 4 -->
+        <!-- Ganti "foto4.jpg" dengan path/nama file gambar Anda -->
         <div class="fav-card">
-          <div class="fav-placeholder ph-4" style="position:absolute;inset:0;">
-            <svg class="scene-svg" viewBox="0 0 400 280" xmlns="http://www.w3.org/2000/svg">
-              <rect width="400" height="280" fill="#1a0a05"/>
-              <!-- Aurora -->
-              <path d="M0,100 Q100,60 200,90 Q300,120 400,80 L400,160 Q300,190 200,160 Q100,130 0,170Z" fill="#3d6b3d" opacity="0.35"/>
-              <path d="M0,130 Q80,100 200,120 Q320,140 400,110 L400,190 Q320,210 200,195 Q80,180 0,200Z" fill="#5c8a5c" opacity="0.25"/>
-              <!-- Stars -->
-              <circle cx="50" cy="30" r="1.5" fill="#fff" opacity="0.8"/>
-              <circle cx="150" cy="20" r="1" fill="#fff" opacity="0.6"/>
-              <circle cx="280" cy="40" r="2" fill="#fff" opacity="0.7"/>
-              <circle cx="370" cy="25" r="1.5" fill="#fff" opacity="0.5"/>
-              <!-- Ground -->
-              <rect x="0" y="220" width="400" height="60" fill="#0a0503"/>
-              <!-- Trees silhouette -->
-              <polygon points="30,220 40,180 50,220" fill="#050200"/>
-              <polygon points="350,220 360,175 370,220" fill="#050200"/>
-              <polygon points="10,220 25,190 40,220" fill="#050200"/>
-            </svg>
-          </div>
+          <img
+            class="fav-img"
+            src="foto4.jpg"
+            alt="Aurora di Ufuk Utara"
+          />
           <div class="fav-card-content">
             <p class="fav-category">Fenomena Alam</p>
             <h3 class="fav-title">Aurora di Ufuk Utara</h3>
@@ -619,25 +544,13 @@
         </div>
  
         <!-- Card 5 -->
+        <!-- Ganti "foto5.jpg" dengan path/nama file gambar Anda -->
         <div class="fav-card">
-          <div class="fav-placeholder ph-5" style="position:absolute;inset:0;">
-            <svg class="scene-svg" viewBox="0 0 400 280" xmlns="http://www.w3.org/2000/svg">
-              <rect width="400" height="280" fill="#0d1f0d"/>
-              <!-- Forest path -->
-              <rect x="0" y="0" width="400" height="280" fill="#1a3a1a" opacity="0.5"/>
-              <!-- Tree trunks -->
-              <rect x="50" y="0" width="18" height="280" fill="#0f1f0f" opacity="0.9"/>
-              <rect x="130" y="0" width="14" height="280" fill="#0a1a0a" opacity="0.9"/>
-              <rect x="250" y="0" width="20" height="280" fill="#0f1f0f" opacity="0.9"/>
-              <rect x="340" y="0" width="12" height="280" fill="#0a1a0a" opacity="0.9"/>
-              <!-- Light beam -->
-              <path d="M170,0 L210,0 L240,280 L140,280Z" fill="#f2e8d9" opacity="0.05"/>
-              <!-- Canopy -->
-              <rect x="0" y="0" width="400" height="80" fill="#0a1a0a" opacity="0.7"/>
-              <!-- Moss/ground -->
-              <ellipse cx="200" cy="260" rx="200" ry="30" fill="#1a3a1a" opacity="0.6"/>
-            </svg>
-          </div>
+          <img
+            class="fav-img"
+            src="foto5.jpg"
+            alt="Lorong Hutan Hujan"
+          />
           <div class="fav-card-content">
             <p class="fav-category">Landscape</p>
             <h3 class="fav-title">Lorong Hutan Hujan</h3>
@@ -646,33 +559,13 @@
         </div>
  
         <!-- Card 6 -->
+        <!-- Ganti "foto6.jpg" dengan path/nama file gambar Anda -->
         <div class="fav-card">
-          <div class="fav-placeholder ph-6" style="position:absolute;inset:0;">
-            <svg class="scene-svg" viewBox="0 0 400 280" xmlns="http://www.w3.org/2000/svg">
-              <rect width="400" height="280" fill="#2c1a0e"/>
-              <!-- Spider macro -->
-              <circle cx="200" cy="140" rx="200" ry="100" fill="none"/>
-              <!-- Web threads -->
-              <line x1="200" y1="60" x2="200" y2="220" stroke="#f2e8d9" stroke-width="0.5" opacity="0.3"/>
-              <line x1="120" y1="80" x2="280" y2="200" stroke="#f2e8d9" stroke-width="0.5" opacity="0.3"/>
-              <line x1="280" y1="80" x2="120" y2="200" stroke="#f2e8d9" stroke-width="0.5" opacity="0.3"/>
-              <line x1="80" y1="140" x2="320" y2="140" stroke="#f2e8d9" stroke-width="0.5" opacity="0.3"/>
-              <!-- Web rings -->
-              <circle cx="200" cy="140" r="30" fill="none" stroke="#f2e8d9" stroke-width="0.5" opacity="0.25"/>
-              <circle cx="200" cy="140" r="60" fill="none" stroke="#f2e8d9" stroke-width="0.5" opacity="0.2"/>
-              <circle cx="200" cy="140" r="90" fill="none" stroke="#f2e8d9" stroke-width="0.5" opacity="0.15"/>
-              <!-- Spider body -->
-              <ellipse cx="200" cy="140" rx="12" ry="8" fill="#1c1008"/>
-              <ellipse cx="200" cy="132" rx="7" ry="6" fill="#2c1a0e"/>
-              <!-- Legs -->
-              <line x1="188" y1="137" x2="162" y2="125" stroke="#1c1008" stroke-width="1.5"/>
-              <line x1="188" y1="140" x2="158" y2="138" stroke="#1c1008" stroke-width="1.5"/>
-              <line x1="188" y1="143" x2="162" y2="155" stroke="#1c1008" stroke-width="1.5"/>
-              <line x1="212" y1="137" x2="238" y2="125" stroke="#1c1008" stroke-width="1.5"/>
-              <line x1="212" y1="140" x2="242" y2="138" stroke="#1c1008" stroke-width="1.5"/>
-              <line x1="212" y1="143" x2="238" y2="155" stroke="#1c1008" stroke-width="1.5"/>
-            </svg>
-          </div>
+          <img
+            class="fav-img"
+            src="foto6.jpg"
+            alt="Jaring Laba-laba Berkilau"
+          />
           <div class="fav-card-content">
             <p class="fav-category">Makro</p>
             <h3 class="fav-title">Jaring Laba-laba Berkilau</h3>
